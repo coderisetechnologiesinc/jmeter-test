@@ -8,19 +8,31 @@
         state: present
         update_cache: yes
 
+    - name: Ensure target directory exists
+      file:
+        path: /home/ubuntu/jmeter
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
     - name: Download JMeter
       get_url:
         url: https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.2.tgz
         dest: /tmp/apache-jmeter.tgz
 
-    - name: Extract JMeter
+    - name: Extract JMeter to /home/ubuntu/jmeter
       unarchive:
         src: /tmp/apache-jmeter.tgz
-        dest: /opt/
+        dest: /home/ubuntu/jmeter
         remote_src: yes
+        extra_opts: [--strip-components=1]
+        owner: ubuntu
+        group: ubuntu
 
-    - name: Create symlink
-      file:
-        src: /opt/apache-jmeter-5.6.2/bin/jmeter
-        dest: /usr/bin/jmeter
-        state: link
+    - name: Set lighter JVM heap in jmeter script
+      replace:
+        path: /home/ubuntu/jmeter/bin/jmeter
+        regexp: 'HEAP=.*'
+        replace: 'HEAP="-Xms256m -Xmx512m"'
+      become: false
