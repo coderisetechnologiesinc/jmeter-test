@@ -1,0 +1,7 @@
+- name: Copy JMeter Test Plan
+  hosts: slaves
+  tasks:
+    - name: Copy test plan
+      copy:
+        src: "{{ playbook_dir }}/../../test-plan/practice-test.jmx"
+        dest: /home/ubuntu/practice-test.jmx

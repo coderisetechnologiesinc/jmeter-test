@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Apache JMeter Dashboard</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../../sbadmin2-1.0.7/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- icone onglet -->
+    <link rel="icon" type="image/png" href="icon-apache.png" />
+
+    <!-- MetisMenu CSS -->
+    <link href="../../sbadmin2-1.0.7/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Legends CSS -->
+    <link href="../css/legends.css" rel="stylesheet">
+
+
+    <!-- Custom CSS -->
+    <link href="../../sbadmin2-1.0.7/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../../sbadmin2-1.0.7/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+   <!-- JQuery UI style -->
+    <link href="../css/jquery-ui.min.css" rel="stylesheet">
+    <link href="../css/jquery-ui.structure.min.css" rel="stylesheet">
+    <link href="../css/jquery-ui.theme.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../index.html">Apache JMeter Dashboard</a>
+            </div>
+            <!-- /.navbar-header -->
+
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+
+                        <li>
+                            <a href="../../index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="OverTime.html">Over Time</a>
+
+                                </li>
+                                <li>
+                                    <a href="Throughput.html">Throughput</a>
+                                </li>
+                                <li>
+                                    <a href="ResponseTimes.html">Response Times</a>
+                                </li>
+                
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Customs Graphs<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="CustomsGraphs.html">Over Time<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level in" id="submenu">
+                                            <li>
+                                                <a href="CustomsGraphs.html#custom_ulp_actual_live_offset" onclick="$('#bodyResponsecustom_ulp_actual_live_offset').collapse('show');">
+                                                Actual Live Offset (Distance from Live)
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="CustomsGraphs.html#custom_ulp_buffer_fill" onclick="$('#bodyResponsecustom_ulp_buffer_fill').collapse('show');">
+                                                Buffer fill in Millis
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="CustomsGraphs.html#custom_ulp_chunks_skipped" onclick="$('#bodyResponsecustom_ulp_chunks_skipped').collapse('show');">
+                                                Number of chunks skipped in case of play close to Live Edge
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="CustomsGraphs.html#custom_ulp_hit" onclick="$('#bodyResponsecustom_ulp_hit').collapse('show');">
+                                                CDN Hit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="CustomsGraphs.html#custom_ulp_lag_ratio" onclick="$('#bodyResponsecustom_ulp_lag_ratio').collapse('show');">
+                                                Lag ratio in percentage
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="CustomsGraphs.html#custom_ulp_lag_ratio_wo_bf" onclick="$('#bodyResponsecustom_ulp_lag_ratio_wo_bf').collapse('show');">
+                                                Lag ratio without buffer fill in percentage
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="CustomsGraphs.html#custom_ulp_lag_time" onclick="$('#bodyResponsecustom_ulp_lag_time').collapse('show');">
+                                                Lag time in Millis
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="CustomsGraphs.html#custom_ulp_miss" onclick="$('#bodyResponsecustom_ulp_miss').collapse('show');">
+                                                CDN Miss
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="CustomsGraphs.html#custom_ulp_speed_rate" onclick="$('#bodyResponsecustom_ulp_speed_rate').collapse('show');">
+                                                Speed rate in percentage
+                                                </a>
+                                            </li>
+                                    </ul>
+                                <li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                     <div class="panel panel-default" >
+                        <div class="panel-heading" style="text-align:center;">
+                           <p class="dashboard-title">Test and Report information</p>
+                        </div>
+                        <div class="panel-body">
+                            <table id="generalInfos" class="table table-bordered table-condensed " >
+                                <tr>
+                                    <td>File:</td>
+                                    <td>"merged-result.jtl"</td>
+                                </tr>
+                                <tr>
+                                    <td>Start Time:</td>
+                                    <td>"4/29/25, 10:53 PM"</td>
+                                </tr>
+                                <tr>
+                                    <td>End Time:</td>
+                                    <td>"4/29/25, 10:56 PM"</td>
+                                </tr>
+                                    <tr>
+                                        <td>Filter for display:</td>
+                                        <td>""</td>
+                                    </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+            <!-- /.row -->
+                <div class="row" id="graphContainer">
+                
+                    <div class="col-lg-12 portlet" id="custom_ulp_actual_live_offset">
+                        <div class="panel panel-default">
+                            <div class="panel-heading portlet-header">
+                                 <i  class="fa fa-bar-chart-o fa-fw" ></i> 
+                                <span type="button" class="dropdown-toggle click-title span-title" data-toggle="collapse" href="#bodyResponsecustom_ulp_actual_live_offset" aria-expanded="true" aria-controls="bodycustom_ulp_actual_live_offset">Actual Live Offset (Distance from Live)</span>
+                                 <div class="pull-right">
+                                    <div class="btn-group">
+                                        <a class="btn btn-link btn-xs">
+                                            <i class="glyphicon glyphicon-resize-vertical"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-wrench"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-user">
+                                            <li><a href="#bodyResponsecustom_ulp_actual_live_offset" onClick="checkAll('choicesResponsecustom_ulp_actual_live_offset');">Display all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_actual_live_offset" onClick="uncheckAll('choicesResponsecustom_ulp_actual_live_offset');">Hide all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_actual_live_offset" onclick="exportToPNG('flotResponsecustom_ulp_actual_live_offset', this);">Save as PNG</a></li>
+                                        </ul>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="collapse" href="#bodyResponsecustom_ulp_actual_live_offset" aria-expanded="true" aria-controls="bodyResponsecustom_ulp_actual_live_offset">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="collapse in portlet-content" id="bodyResponsecustom_ulp_actual_live_offset">
+                                <div class="panel-body" id="collapseResponsecustom_ulp_actual_live_offset">
+                                    <div class="flot-chart">
+                                        <div class="flot-chart-content" id="flotResponsecustom_ulp_actual_live_offset" style="float: left; width:80%;"></div>
+                                        <div style="float:left;margin-left:5px">
+                                            <p>Zoom :</p>
+                                            <div id="overviewResponsecustom_ulp_actual_live_offset" style="width:190px;height:100px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" id="footerResponsecustom_ulp_actual_live_offset">
+                                    <p id="legendResponsecustom_ulp_actual_live_offset" hidden></p>
+                                    <ul id="choicesResponsecustom_ulp_actual_live_offset" class="legend"></ul>
+                                </div>
+                            </div>    
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="col-lg-12 portlet" id="custom_ulp_buffer_fill">
+                        <div class="panel panel-default">
+                            <div class="panel-heading portlet-header">
+                                 <i  class="fa fa-bar-chart-o fa-fw" ></i> 
+                                <span type="button" class="dropdown-toggle click-title span-title" data-toggle="collapse" href="#bodyResponsecustom_ulp_buffer_fill" aria-expanded="true" aria-controls="bodycustom_ulp_buffer_fill">Buffer fill in Millis</span>
+                                 <div class="pull-right">
+                                    <div class="btn-group">
+                                        <a class="btn btn-link btn-xs">
+                                            <i class="glyphicon glyphicon-resize-vertical"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-wrench"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-user">
+                                            <li><a href="#bodyResponsecustom_ulp_buffer_fill" onClick="checkAll('choicesResponsecustom_ulp_buffer_fill');">Display all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_buffer_fill" onClick="uncheckAll('choicesResponsecustom_ulp_buffer_fill');">Hide all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_buffer_fill" onclick="exportToPNG('flotResponsecustom_ulp_buffer_fill', this);">Save as PNG</a></li>
+                                        </ul>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="collapse" href="#bodyResponsecustom_ulp_buffer_fill" aria-expanded="true" aria-controls="bodyResponsecustom_ulp_buffer_fill">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="collapse out portlet-content" id="bodyResponsecustom_ulp_buffer_fill">
+                                <div class="panel-body" id="collapseResponsecustom_ulp_buffer_fill">
+                                    <div class="flot-chart">
+                                        <div class="flot-chart-content" id="flotResponsecustom_ulp_buffer_fill" style="float: left; width:80%;"></div>
+                                        <div style="float:left;margin-left:5px">
+                                            <p>Zoom :</p>
+                                            <div id="overviewResponsecustom_ulp_buffer_fill" style="width:190px;height:100px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" id="footerResponsecustom_ulp_buffer_fill">
+                                    <p id="legendResponsecustom_ulp_buffer_fill" hidden></p>
+                                    <ul id="choicesResponsecustom_ulp_buffer_fill" class="legend"></ul>
+                                </div>
+                            </div>    
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="col-lg-12 portlet" id="custom_ulp_chunks_skipped">
+                        <div class="panel panel-default">
+                            <div class="panel-heading portlet-header">
+                                 <i  class="fa fa-bar-chart-o fa-fw" ></i> 
+                                <span type="button" class="dropdown-toggle click-title span-title" data-toggle="collapse" href="#bodyResponsecustom_ulp_chunks_skipped" aria-expanded="true" aria-controls="bodycustom_ulp_chunks_skipped">Number of chunks skipped in case of play close to Live Edge</span>
+                                 <div class="pull-right">
+                                    <div class="btn-group">
+                                        <a class="btn btn-link btn-xs">
+                                            <i class="glyphicon glyphicon-resize-vertical"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-wrench"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-user">
+                                            <li><a href="#bodyResponsecustom_ulp_chunks_skipped" onClick="checkAll('choicesResponsecustom_ulp_chunks_skipped');">Display all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_chunks_skipped" onClick="uncheckAll('choicesResponsecustom_ulp_chunks_skipped');">Hide all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_chunks_skipped" onclick="exportToPNG('flotResponsecustom_ulp_chunks_skipped', this);">Save as PNG</a></li>
+                                        </ul>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="collapse" href="#bodyResponsecustom_ulp_chunks_skipped" aria-expanded="true" aria-controls="bodyResponsecustom_ulp_chunks_skipped">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="collapse out portlet-content" id="bodyResponsecustom_ulp_chunks_skipped">
+                                <div class="panel-body" id="collapseResponsecustom_ulp_chunks_skipped">
+                                    <div class="flot-chart">
+                                        <div class="flot-chart-content" id="flotResponsecustom_ulp_chunks_skipped" style="float: left; width:80%;"></div>
+                                        <div style="float:left;margin-left:5px">
+                                            <p>Zoom :</p>
+                                            <div id="overviewResponsecustom_ulp_chunks_skipped" style="width:190px;height:100px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" id="footerResponsecustom_ulp_chunks_skipped">
+                                    <p id="legendResponsecustom_ulp_chunks_skipped" hidden></p>
+                                    <ul id="choicesResponsecustom_ulp_chunks_skipped" class="legend"></ul>
+                                </div>
+                            </div>    
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="col-lg-12 portlet" id="custom_ulp_hit">
+                        <div class="panel panel-default">
+                            <div class="panel-heading portlet-header">
+                                 <i  class="fa fa-bar-chart-o fa-fw" ></i> 
+                                <span type="button" class="dropdown-toggle click-title span-title" data-toggle="collapse" href="#bodyResponsecustom_ulp_hit" aria-expanded="true" aria-controls="bodycustom_ulp_hit">CDN Hit</span>
+                                 <div class="pull-right">
+                                    <div class="btn-group">
+                                        <a class="btn btn-link btn-xs">
+                                            <i class="glyphicon glyphicon-resize-vertical"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-wrench"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-user">
+                                            <li><a href="#bodyResponsecustom_ulp_hit" onClick="checkAll('choicesResponsecustom_ulp_hit');">Display all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_hit" onClick="uncheckAll('choicesResponsecustom_ulp_hit');">Hide all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_hit" onclick="exportToPNG('flotResponsecustom_ulp_hit', this);">Save as PNG</a></li>
+                                        </ul>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="collapse" href="#bodyResponsecustom_ulp_hit" aria-expanded="true" aria-controls="bodyResponsecustom_ulp_hit">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="collapse out portlet-content" id="bodyResponsecustom_ulp_hit">
+                                <div class="panel-body" id="collapseResponsecustom_ulp_hit">
+                                    <div class="flot-chart">
+                                        <div class="flot-chart-content" id="flotResponsecustom_ulp_hit" style="float: left; width:80%;"></div>
+                                        <div style="float:left;margin-left:5px">
+                                            <p>Zoom :</p>
+                                            <div id="overviewResponsecustom_ulp_hit" style="width:190px;height:100px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" id="footerResponsecustom_ulp_hit">
+                                    <p id="legendResponsecustom_ulp_hit" hidden></p>
+                                    <ul id="choicesResponsecustom_ulp_hit" class="legend"></ul>
+                                </div>
+                            </div>    
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="col-lg-12 portlet" id="custom_ulp_lag_ratio">
+                        <div class="panel panel-default">
+                            <div class="panel-heading portlet-header">
+                                 <i  class="fa fa-bar-chart-o fa-fw" ></i> 
+                                <span type="button" class="dropdown-toggle click-title span-title" data-toggle="collapse" href="#bodyResponsecustom_ulp_lag_ratio" aria-expanded="true" aria-controls="bodycustom_ulp_lag_ratio">Lag ratio in percentage</span>
+                                 <div class="pull-right">
+                                    <div class="btn-group">
+                                        <a class="btn btn-link btn-xs">
+                                            <i class="glyphicon glyphicon-resize-vertical"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-wrench"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-user">
+                                            <li><a href="#bodyResponsecustom_ulp_lag_ratio" onClick="checkAll('choicesResponsecustom_ulp_lag_ratio');">Display all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_lag_ratio" onClick="uncheckAll('choicesResponsecustom_ulp_lag_ratio');">Hide all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_lag_ratio" onclick="exportToPNG('flotResponsecustom_ulp_lag_ratio', this);">Save as PNG</a></li>
+                                        </ul>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="collapse" href="#bodyResponsecustom_ulp_lag_ratio" aria-expanded="true" aria-controls="bodyResponsecustom_ulp_lag_ratio">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="collapse out portlet-content" id="bodyResponsecustom_ulp_lag_ratio">
+                                <div class="panel-body" id="collapseResponsecustom_ulp_lag_ratio">
+                                    <div class="flot-chart">
+                                        <div class="flot-chart-content" id="flotResponsecustom_ulp_lag_ratio" style="float: left; width:80%;"></div>
+                                        <div style="float:left;margin-left:5px">
+                                            <p>Zoom :</p>
+                                            <div id="overviewResponsecustom_ulp_lag_ratio" style="width:190px;height:100px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" id="footerResponsecustom_ulp_lag_ratio">
+                                    <p id="legendResponsecustom_ulp_lag_ratio" hidden></p>
+                                    <ul id="choicesResponsecustom_ulp_lag_ratio" class="legend"></ul>
+                                </div>
+                            </div>    
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="col-lg-12 portlet" id="custom_ulp_lag_ratio_wo_bf">
+                        <div class="panel panel-default">
+                            <div class="panel-heading portlet-header">
+                                 <i  class="fa fa-bar-chart-o fa-fw" ></i> 
+                                <span type="button" class="dropdown-toggle click-title span-title" data-toggle="collapse" href="#bodyResponsecustom_ulp_lag_ratio_wo_bf" aria-expanded="true" aria-controls="bodycustom_ulp_lag_ratio_wo_bf">Lag ratio without buffer fill in percentage</span>
+                                 <div class="pull-right">
+                                    <div class="btn-group">
+                                        <a class="btn btn-link btn-xs">
+                                            <i class="glyphicon glyphicon-resize-vertical"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-wrench"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-user">
+                                            <li><a href="#bodyResponsecustom_ulp_lag_ratio_wo_bf" onClick="checkAll('choicesResponsecustom_ulp_lag_ratio_wo_bf');">Display all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_lag_ratio_wo_bf" onClick="uncheckAll('choicesResponsecustom_ulp_lag_ratio_wo_bf');">Hide all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_lag_ratio_wo_bf" onclick="exportToPNG('flotResponsecustom_ulp_lag_ratio_wo_bf', this);">Save as PNG</a></li>
+                                        </ul>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="collapse" href="#bodyResponsecustom_ulp_lag_ratio_wo_bf" aria-expanded="true" aria-controls="bodyResponsecustom_ulp_lag_ratio_wo_bf">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="collapse out portlet-content" id="bodyResponsecustom_ulp_lag_ratio_wo_bf">
+                                <div class="panel-body" id="collapseResponsecustom_ulp_lag_ratio_wo_bf">
+                                    <div class="flot-chart">
+                                        <div class="flot-chart-content" id="flotResponsecustom_ulp_lag_ratio_wo_bf" style="float: left; width:80%;"></div>
+                                        <div style="float:left;margin-left:5px">
+                                            <p>Zoom :</p>
+                                            <div id="overviewResponsecustom_ulp_lag_ratio_wo_bf" style="width:190px;height:100px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" id="footerResponsecustom_ulp_lag_ratio_wo_bf">
+                                    <p id="legendResponsecustom_ulp_lag_ratio_wo_bf" hidden></p>
+                                    <ul id="choicesResponsecustom_ulp_lag_ratio_wo_bf" class="legend"></ul>
+                                </div>
+                            </div>    
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="col-lg-12 portlet" id="custom_ulp_lag_time">
+                        <div class="panel panel-default">
+                            <div class="panel-heading portlet-header">
+                                 <i  class="fa fa-bar-chart-o fa-fw" ></i> 
+                                <span type="button" class="dropdown-toggle click-title span-title" data-toggle="collapse" href="#bodyResponsecustom_ulp_lag_time" aria-expanded="true" aria-controls="bodycustom_ulp_lag_time">Lag time in Millis</span>
+                                 <div class="pull-right">
+                                    <div class="btn-group">
+                                        <a class="btn btn-link btn-xs">
+                                            <i class="glyphicon glyphicon-resize-vertical"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-wrench"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-user">
+                                            <li><a href="#bodyResponsecustom_ulp_lag_time" onClick="checkAll('choicesResponsecustom_ulp_lag_time');">Display all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_lag_time" onClick="uncheckAll('choicesResponsecustom_ulp_lag_time');">Hide all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_lag_time" onclick="exportToPNG('flotResponsecustom_ulp_lag_time', this);">Save as PNG</a></li>
+                                        </ul>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="collapse" href="#bodyResponsecustom_ulp_lag_time" aria-expanded="true" aria-controls="bodyResponsecustom_ulp_lag_time">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="collapse out portlet-content" id="bodyResponsecustom_ulp_lag_time">
+                                <div class="panel-body" id="collapseResponsecustom_ulp_lag_time">
+                                    <div class="flot-chart">
+                                        <div class="flot-chart-content" id="flotResponsecustom_ulp_lag_time" style="float: left; width:80%;"></div>
+                                        <div style="float:left;margin-left:5px">
+                                            <p>Zoom :</p>
+                                            <div id="overviewResponsecustom_ulp_lag_time" style="width:190px;height:100px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" id="footerResponsecustom_ulp_lag_time">
+                                    <p id="legendResponsecustom_ulp_lag_time" hidden></p>
+                                    <ul id="choicesResponsecustom_ulp_lag_time" class="legend"></ul>
+                                </div>
+                            </div>    
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="col-lg-12 portlet" id="custom_ulp_miss">
+                        <div class="panel panel-default">
+                            <div class="panel-heading portlet-header">
+                                 <i  class="fa fa-bar-chart-o fa-fw" ></i> 
+                                <span type="button" class="dropdown-toggle click-title span-title" data-toggle="collapse" href="#bodyResponsecustom_ulp_miss" aria-expanded="true" aria-controls="bodycustom_ulp_miss">CDN Miss</span>
+                                 <div class="pull-right">
+                                    <div class="btn-group">
+                                        <a class="btn btn-link btn-xs">
+                                            <i class="glyphicon glyphicon-resize-vertical"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-wrench"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-user">
+                                            <li><a href="#bodyResponsecustom_ulp_miss" onClick="checkAll('choicesResponsecustom_ulp_miss');">Display all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_miss" onClick="uncheckAll('choicesResponsecustom_ulp_miss');">Hide all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_miss" onclick="exportToPNG('flotResponsecustom_ulp_miss', this);">Save as PNG</a></li>
+                                        </ul>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="collapse" href="#bodyResponsecustom_ulp_miss" aria-expanded="true" aria-controls="bodyResponsecustom_ulp_miss">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="collapse out portlet-content" id="bodyResponsecustom_ulp_miss">
+                                <div class="panel-body" id="collapseResponsecustom_ulp_miss">
+                                    <div class="flot-chart">
+                                        <div class="flot-chart-content" id="flotResponsecustom_ulp_miss" style="float: left; width:80%;"></div>
+                                        <div style="float:left;margin-left:5px">
+                                            <p>Zoom :</p>
+                                            <div id="overviewResponsecustom_ulp_miss" style="width:190px;height:100px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" id="footerResponsecustom_ulp_miss">
+                                    <p id="legendResponsecustom_ulp_miss" hidden></p>
+                                    <ul id="choicesResponsecustom_ulp_miss" class="legend"></ul>
+                                </div>
+                            </div>    
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="col-lg-12 portlet" id="custom_ulp_speed_rate">
+                        <div class="panel panel-default">
+                            <div class="panel-heading portlet-header">
+                                 <i  class="fa fa-bar-chart-o fa-fw" ></i> 
+                                <span type="button" class="dropdown-toggle click-title span-title" data-toggle="collapse" href="#bodyResponsecustom_ulp_speed_rate" aria-expanded="true" aria-controls="bodycustom_ulp_speed_rate">Speed rate in percentage</span>
+                                 <div class="pull-right">
+                                    <div class="btn-group">
+                                        <a class="btn btn-link btn-xs">
+                                            <i class="glyphicon glyphicon-resize-vertical"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-wrench"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-user">
+                                            <li><a href="#bodyResponsecustom_ulp_speed_rate" onClick="checkAll('choicesResponsecustom_ulp_speed_rate');">Display all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_speed_rate" onClick="uncheckAll('choicesResponsecustom_ulp_speed_rate');">Hide all samples</a>
+                                            </li>
+                                            <li><a href="#bodyResponsecustom_ulp_speed_rate" onclick="exportToPNG('flotResponsecustom_ulp_speed_rate', this);">Save as PNG</a></li>
+                                        </ul>
+                                        <button type="button" class="btn btn-link btn-xs dropdown-toggle" data-toggle="collapse" href="#bodyResponsecustom_ulp_speed_rate" aria-expanded="true" aria-controls="bodyResponsecustom_ulp_speed_rate">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="collapse out portlet-content" id="bodyResponsecustom_ulp_speed_rate">
+                                <div class="panel-body" id="collapseResponsecustom_ulp_speed_rate">
+                                    <div class="flot-chart">
+                                        <div class="flot-chart-content" id="flotResponsecustom_ulp_speed_rate" style="float: left; width:80%;"></div>
+                                        <div style="float:left;margin-left:5px">
+                                            <p>Zoom :</p>
+                                            <div id="overviewResponsecustom_ulp_speed_rate" style="width:190px;height:100px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" id="footerResponsecustom_ulp_speed_rate">
+                                    <p id="legendResponsecustom_ulp_speed_rate" hidden></p>
+                                    <ul id="choicesResponsecustom_ulp_speed_rate" class="legend"></ul>
+                                </div>
+                            </div>    
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+     <!-- jQuery -->
+    <script src="../../sbadmin2-1.0.7/bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../../sbadmin2-1.0.7/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../../sbadmin2-1.0.7/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Flot Charts JavaScript -->
+    <script src="../../sbadmin2-1.0.7/bower_components/flot/excanvas.min.js"></script>
+    <script src="../../sbadmin2-1.0.7/bower_components/flot/jquery.flot.js"></script>
+    <script src="../../sbadmin2-1.0.7/bower_components/flot/jquery.flot.pie.js"></script>
+    <script src="../../sbadmin2-1.0.7/bower_components/flot/jquery.flot.resize.js"></script>
+    <script src="../../sbadmin2-1.0.7/bower_components/flot/jquery.flot.canvas.js"></script>
+    <script src="../../sbadmin2-1.0.7/bower_components/flot/jquery.flot.navigate.js"></script>
+    <script src="../../sbadmin2-1.0.7/bower_components/flot/jquery.flot.time.js"></script>
+    <script src="../../sbadmin2-1.0.7/bower_components/flot/jquery.flot.selection.js"></script>
+    <script src="../../sbadmin2-1.0.7/bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+    <script src="../../sbadmin2-1.0.7/bower_components/flot-axislabels/jquery.flot.axislabels.js"></script>
+    <script src="../js/hashtable.js"></script>
+    <script src="../js/jquery.numberformatter-1.2.3.min.js"></script>
+    <script src="../js/curvedLines.js"></script>
+    <script src="../js/dashboard-commons.js"></script>
+    <script src="../js/customGraph.js"></script>
+    <script src="../js/jquery-ui.min.js"></script>
+    <script src="../../sbadmin2-1.0.7/bower_components/flot/jquery.flot.threshold.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="../../sbadmin2-1.0.7/dist/js/sb-admin-2.js"></script>
+    <script src="../js/jquery.cookie.js"></script>
+
+    <script src="../../sbadmin2-1.0.7/bower_components/flot/jquery.flot.symbol.js"></script>
+
+</body>
+
+</html>

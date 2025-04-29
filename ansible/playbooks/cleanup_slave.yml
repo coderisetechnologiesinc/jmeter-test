@@ -1,0 +1,17 @@
+- name: Cleanup Previous Test Files on Slaves
+  hosts: slaves
+  tasks:
+    - name: Remove old test plan files
+      file:
+        path: /home/ubuntu/practice-test.jmx
+        state: absent
+
+    - name: Remove old result files (.jtl)
+      file:
+        path: /home/ubuntu/result.jtl
+        state: absent
+
+    - name: Remove old log files
+      file:
+        path: /home/ubuntu/jmeter.log
+        state: absent

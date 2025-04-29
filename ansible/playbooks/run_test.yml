@@ -1,0 +1,6 @@
+- name: Run JMeter Test
+  hosts: slaves
+  tasks:
+    - name: Run JMeter Test
+      shell: |
+        /home/ubuntu/jmeter/bin/jmeter -n -t /home/ubuntu/practice-test.jmx -l /home/ubuntu/result.jtl > /home/ubuntu/jmeter.log 2>&1

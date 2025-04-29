@@ -1,0 +1,9 @@
+- name: Fetch JMeter Results
+  hosts: slaves
+  tasks:
+    - name: Fetch result file with host-specific name
+      fetch:
+        src: /home/ubuntu/result.jtl
+        dest: "{{ playbook_dir }}/../../results/result-{{ inventory_hostname }}.jtl"
+        flat: yes
+        force: yes
