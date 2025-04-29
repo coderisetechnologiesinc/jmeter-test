@@ -42,7 +42,7 @@ sleep 300  # adjust according to test duration
 echo "Fetching Results"
 ansible-playbook -i ../ansible/inventory.ini ../ansible/playbooks/fetch_results.yml
 
-echo "Merging all slave results into one file..."    ----------------------> For later use when have multiple Slaves
+echo "Merging all slave results into one file..."   # ----------------------> For later use when have multiple Slaves
 awk 'NR == 1 || $0 !~ /^timeStamp,elapsed,label,responseCode/' ../results/result-*.jtl > ../results/merged-result.jtl
 
 echo "Verifying merged file..."
