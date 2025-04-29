@@ -2,8 +2,27 @@
 
 set -e
 
-#echo "Installing Java and JMeter"
-#ansible-playbook -i ../ansible/inventory.ini ../ansible/playbooks/install_java_jmeter.yml
+# Check and install JMeter only if not already installed
+echo "Checking JMeter installation on slaves"
+NEED_INSTALL=false
+
+for HOST in $(awk '/^[0-9]/{print $1}' ../ansible/inventory.ini); do
+    echo "Checking JMeter on $HOST"
+    if ! ssh -o StrictHostKeyChecking=no -i ../ansible/jmeter-lt-test-key.pem ubuntu@$HOST 'test -x /home/ubuntu/jmeter/bin/jmeter'; then
+        echo "JMeter not found on $HOST. Marking for install."
+        NEED_INSTALL=true
+        break
+    else
+        echo "JMeter already installed on $HOST"
+    fi
+done
+
+if [ "$NEED_INSTALL" = true ]; then
+    echo "Installing Java and JMeter only where not present..."
+    ansible-playbook -i ../ansible/inventory.ini ../ansible/playbooks/install_java_jmeter.yml
+else
+    echo "All nodes already have JMeter installed."
+fi
 
 rm -rf ../results/*
 rm -rf ../html-report/*
