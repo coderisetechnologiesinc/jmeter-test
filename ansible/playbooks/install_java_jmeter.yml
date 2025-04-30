@@ -37,18 +37,34 @@
         replace: 'HEAP="-Xms256m -Xmx512m"'
       become: false
 
-    - name: Create lib/ext directory if not exists
-      file:
-        path: /home/ubuntu/jmeter/lib/ext
-        state: directory
-        owner: ubuntu
-        group: ubuntu
-        mode: '0755'
+        - name: Clone BlazeMeter HLS Plugin repo
+      git:
+        repo: https://github.com/Blazemeter/HLSPlugin.git
+        dest: /home/ubuntu/HLSPlugin
+        force: yes
+        update: yes
+        version: master
+      become_user: ubuntu
 
-    - name: Download BlazeMeter HLS Plugin
-      get_url:
-        url: https://github.com/Blazemeter/HLSPlugin/releases/download/1.0/hls-plugin-1.0.jar
-        dest: /home/ubuntu/jmeter/lib/ext/hls-plugin.jar
+    - name: Build HLS Plugin using Gradle
+      shell: ./gradlew jar
+      args:
+        chdir: /home/ubuntu/HLSPlugin
+      become_user: ubuntu
+
+    - name: Copy built HLS plugin to JMeter ext dir
+      copy:
+        src: /home/ubuntu/HLSPlugin/build/libs/HLSPlugin.jar
+        dest: "{{ jmeter_install_dir }}/lib/ext/HLSPlugin.jar"
+        remote_src: yes
         owner: ubuntu
         group: ubuntu
         mode: '0644'
+
+    - name: Copy HLS plugin dependencies to JMeter lib
+      shell: |
+        ./gradlew copyDependencies
+        cp build/dependencies/*.jar {{ jmeter_install_dir }}/lib/
+      args:
+        chdir: /home/ubuntu/HLSPlugin
+      become_user: ubuntu
