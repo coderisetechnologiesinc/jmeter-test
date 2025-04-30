@@ -1,6 +1,9 @@
-- name: Install Java and JMeter
+- name: Install Java, JMeter, and Required Plugins
   hosts: slaves
   become: yes
+  vars:
+    jmeter_install_dir: /home/ubuntu/jmeter
+
   tasks:
     - name: Install Java
       apt:
@@ -8,9 +11,9 @@
         state: present
         update_cache: yes
 
-    - name: Ensure target directory exists
+    - name: Ensure JMeter base directory exists
       file:
-        path: /home/ubuntu/jmeter
+        path: "{{ jmeter_install_dir }}"
         state: directory
         owner: ubuntu
         group: ubuntu
@@ -21,38 +24,11 @@
         url: https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.2.tgz
         dest: /tmp/apache-jmeter.tgz
 
-    - name: Extract JMeter to /home/ubuntu/jmeter
+    - name: Extract JMeter to target dir
       unarchive:
         src: /tmp/apache-jmeter.tgz
-        dest: /home/ubuntu/jmeter
+        dest: "{{ jmeter_install_dir }}"
         remote_src: yes
         extra_opts: [--strip-components=1]
         owner: ubuntu
         group: ubuntu
-
-    - name: Set lighter JVM heap in jmeter script
-      replace:
-        path: /home/ubuntu/jmeter/bin/jmeter
-        regexp: 'HEAP=.*'
-        replace: 'HEAP="-Xms256m -Xmx512m"'
-      become: false
-
-    - name: Download JMeter Plugins Manager
-      get_url:
-        url: https://jmeter-plugins.org/get/
-        dest: /home/ubuntu/jmeter/lib/ext/jmeter-plugins-manager.jar
-        mode: '0644'
-        owner: ubuntu
-        group: ubuntu
-
-    - name: Make PluginsManagerCMD.sh executable
-      file:
-        path: /home/ubuntu/jmeter/bin/PluginsManagerCMD.sh
-        mode: '0755'
-
-    - name: Install BlazeMeter HLS Plugin
-      shell: ./PluginsManagerCMD.sh install bzm-hls
-      args:
-        chdir: /home/ubuntu/jmeter/bin
-      become_user: ubuntu
-      

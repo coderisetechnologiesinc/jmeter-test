@@ -20,9 +20,26 @@ done
 if [ "$NEED_INSTALL" = true ]; then
     echo "Installing Java and JMeter only where not present..."
     ansible-playbook -i ../ansible/inventory.ini ../ansible/playbooks/install_java_jmeter.yml
-else
-    echo "All nodes already have JMeter installed."
+
+    # Remove old jmeter binary (may be broken or cause memory issues)
+    echo "Removing old jmeter binary to avoid memory conflicts"
+    ansible -i ../ansible/inventory.ini all -m file \
+        -a "path=/home/ubuntu/jmeter/bin/jmeter state=absent" \
+        --user ubuntu --private-key ../ansible/jmeter-lt-test-key.pem
+
+    # Copy known working binary from local machine
+    echo "Copying fresh jmeter binary from local machine to all slaves"
+    ansible -i ../ansible/inventory.ini all -m copy \
+        -a "src=../scripts/jmeter dest=/home/ubuntu/jmeter/bin/jmeter mode=0755" \
+        --user ubuntu --private-key ../ansible/jmeter-lt-test-key.pem
+
+    # Always copy the plugin JAR to all slaves
+    echo "Copying HLS Plugin JAR to all slaves"
+    ansible -i ../ansible/inventory.ini all -m copy \
+        -a "src=../scripts/jmeter-bzm-hls-3.1.jar dest=/home/ubuntu/jmeter/lib/ext/jmeter-bzm-hls-3.1.jar mode=0644" \
+        --user ubuntu --private-key ../ansible/jmeter-lt-test-key.pem    
 fi
+
 
 rm -rf ../results/*
 rm -rf ../html-report/*
@@ -42,7 +59,7 @@ sleep 300  # adjust according to test duration
 echo "Fetching Results"
 ansible-playbook -i ../ansible/inventory.ini ../ansible/playbooks/fetch_results.yml
 
-echo "Merging all slave results into one file..."   # ----------------------> For later use when have multiple Slaves
+echo "Merging all slave results into one file..."
 awk 'NR == 1 || $0 !~ /^timeStamp,elapsed,label,responseCode/' ../results/result-*.jtl > ../results/merged-result.jtl
 
 echo "Verifying merged file..."
