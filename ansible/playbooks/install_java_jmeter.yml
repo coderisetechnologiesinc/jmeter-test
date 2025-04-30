@@ -36,3 +36,19 @@
         regexp: 'HEAP=.*'
         replace: 'HEAP="-Xms256m -Xmx512m"'
       become: false
+
+    - name: Create lib/ext directory if not exists
+      file:
+        path: /home/ubuntu/jmeter/lib/ext
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Download BlazeMeter HLS Plugin
+      get_url:
+        url: https://github.com/Blazemeter/HLSPlugin/releases/download/1.0/hls-plugin-1.0.jar
+        dest: /home/ubuntu/jmeter/lib/ext/hls-plugin.jar
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
