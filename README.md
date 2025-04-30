@@ -25,7 +25,7 @@ This guide will walk you through setting up and running distributed load tests u
 
 4. **Add Your JMeter Test Plan**
    Replace the default test plan with your own:
-   - Rename or replace your `.jmx` file as:
+   - Dont Rename only replace your `.jmx` file code in:
      ```
      practice-test.jmx
      ```
@@ -42,26 +42,8 @@ This guide will walk you through setting up and running distributed load tests u
    ./run-all.sh
    ```
 
-## Directory Structure Overview
-
-```
-jmeter-test/
-├── ansible/
-│   ├── inventory.ini
-│   └── playbooks/
-│       ├── install_java_jmeter.yml
-│       ├── run_test.yml
-│       └── ...
-├── results/
-├── html-report/
-├── scripts/
-│   ├── run-all.sh
-│   ├── jmeter
-│   └── hlsparserj-xxxx.jar
-└── practice-test.jmx
-```
 
 ## Notes
 
 - Ensure you have SSH access to all EC2 instances listed in your inventory.
-- The JMeter plugin JARs (e.g., for HLS) should be copied manually into `jmeter/lib/ext/` on all remote nodes before running tests.
+- The JMeter plugin JARs (e.g., for HLS) should be copied into `jmeter/lib/ext/` on all remote nodes before running tests for HLS testing
