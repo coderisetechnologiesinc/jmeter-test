@@ -30,13 +30,13 @@ if [ "$NEED_INSTALL" = true ]; then
     # Copy known working binary from local machine
     echo "Copying fresh jmeter binary from local machine to all slaves"
     ansible -i ../ansible/inventory.ini all -m copy \
-        -a "src=../scripts/jmeter dest=/home/ubuntu/jmeter/bin/jmeter mode=0755" \
+        -a "src=../scripts/uploads/jmeter dest=/home/ubuntu/jmeter/bin/jmeter mode=0755" \
         --user ubuntu --private-key ../ansible/jmeter-lt-test-key.pem
 
     # Always copy the plugin JAR to all slaves
     echo "Copying HLS Plugin JAR to all slaves"
     ansible -i ../ansible/inventory.ini all -m copy \
-        -a "src=../scripts/jmeter-bzm-hls-3.1.jar dest=/home/ubuntu/jmeter/lib/ext/jmeter-bzm-hls-3.1.jar mode=0644" \
+        -a "src=../scripts/uploads/jmeter-bzm-hls-3.1.jar dest=/home/ubuntu/jmeter/lib/ext/jmeter-bzm-hls-3.1.jar mode=0644" \
         --user ubuntu --private-key ../ansible/jmeter-lt-test-key.pem    
 fi
 
