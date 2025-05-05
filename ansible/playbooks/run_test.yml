@@ -2,15 +2,20 @@
   hosts: slaves
   tasks:
     - name: Run JMeter Test in Non-GUI Mode
-      shell: /home/ubuntu/jmeter/bin/jmeter -n -t /home/ubuntu/practice-test.jmx -l /home/ubuntu/result.jtl -j /home/ubuntu/jmeter.log
-      async: 1800     # maximum allowed run time (seconds)
-      poll: 0         # don't wait here; continue immediately
-      register: jmeter_async
+      shell: |
+        /home/ubuntu/jmeter/bin/jmeter -n \
+        -t /home/ubuntu/practice-test.jmx \
+        -l /home/ubuntu/result.jtl \
+        -j /home/ubuntu/jmeter.log
+      register: jmeter_output
+      async: 1800
+      poll: 10   # actively poll every 10s, shows output
 
-    - name: Wait for JMeter Test to Finish
-      async_status:
-        jid: "{{ jmeter_async.ansible_job_id }}"
-      register: job_result
-      until: job_result.finished
-      retries: 300    # try for up to 300 * 10 = 3000s = 50 mins
-      delay: 10       # wait 10s between polls
+    - name: Show JMeter logs
+      shell: tail -n 20 /home/ubuntu/jmeter.log
+      register: log_tail
+      ignore_errors: yes
+
+    - debug:
+        msg: "{{ log_tail.stdout_lines }}"
+        
