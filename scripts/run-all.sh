@@ -54,7 +54,7 @@ echo "Running Test on all slaves"
 ansible-playbook -i ../ansible/inventory.ini ../ansible/playbooks/run_test.yml
 
 echo "Waiting for Test to finish"
-sleep 300  # adjust according to test duration
+#sleep 300  # adjust according to test duration
 
 echo "Fetching Results"
 ansible-playbook -i ../ansible/inventory.ini ../ansible/playbooks/fetch_results.yml
